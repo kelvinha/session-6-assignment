@@ -47,18 +47,12 @@ func newPostgresStore() *pgstore.PGStore {
 
 var store = newPostgresStore()
 
-// var store = newCookieStore()
+// var store2 = newCookieStore()
 
-func (service *Service) Login(username, password string, c echo.Context) (err error) {
-	var (
-		getUser User
-		request User
-	)
+func (service *Service) Login(user *User, c echo.Context) (err error) {
+	var getUser User
 
-	request.Username = username
-	request.Password = password
-
-	getUser, err = service.repository.Login(request)
+	getUser, err = service.repository.Login(*user)
 	if err != nil {
 		return
 	}
@@ -79,4 +73,25 @@ func (service *Service) Logout(c echo.Context) (err error) {
 	session.Options.MaxAge = -1
 	session.Save(c.Request(), c.Response())
 	return nil
+}
+
+func (service *Service) Register(userRegister *UserRegister, c echo.Context) (err error) {
+	var (
+		getUser User
+	)
+
+	getUser, err = service.repository.Register(*userRegister)
+	if err != nil {
+		return
+	}
+
+	session, err := store.Get(c.Request(), SESSION_ID)
+	if err != nil {
+		return
+	}
+
+	session.Values["username"] = getUser.Username
+	session.Save(c.Request(), c.Response())
+
+	return
 }

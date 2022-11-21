@@ -22,6 +22,8 @@ func main() {
 	r.Renderer = NewRenderer("views/*.html", true)
 	r.Any("/login", userHandler.HalamanLogin)
 	r.Any("/home", userHandler.HalamanHome)
+	r.Any("/register", userHandler.HalamanRegister)
+	r.POST("/register/store", userHandler.Register)
 	r.POST("/login/store", userHandler.Login)
 	r.POST("/logout", userHandler.Logout)
 

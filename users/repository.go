@@ -24,3 +24,16 @@ func (repository *Repository) Login(user User) (getUser User, err error) {
 
 	return
 }
+
+func (repository *Repository) Register(request UserRegister) (getUser User, err error) {
+	query := repository.db.Table("users").Create(&request)
+
+	if query.Error != nil {
+		err = fmt.Errorf("error : %s", query.Error)
+		return
+	}
+
+	query.Last(&getUser)
+
+	return
+}

@@ -50,6 +50,10 @@ func (ctrl *UserController) HalamanLogin(c echo.Context) error {
 	return c.Render(http.StatusOK, "login.html", nil)
 }
 
+func (ctrl *UserController) HalamanRegister(c echo.Context) error {
+	return c.Render(http.StatusOK, "register.html", nil)
+}
+
 func (ctrl *UserController) HalamanHome(c echo.Context) error {
 	session, _ := store.Get(c.Request(), SESSION_ID)
 	if len(session.Values) == 0 {
@@ -69,7 +73,7 @@ func (ctrl *UserController) Login(c echo.Context) (err error) {
 		return
 	}
 
-	err = ctrl.service.Login(user.Username, user.Password, c)
+	err = ctrl.service.Login(user, c)
 	if err != nil {
 		log.Println(err.Error())
 		return c.Redirect(http.StatusTemporaryRedirect, "/login")
@@ -85,4 +89,21 @@ func (ctrl *UserController) Logout(c echo.Context) (err error) {
 		return c.Redirect(http.StatusTemporaryRedirect, "/home")
 	}
 	return c.Redirect(http.StatusTemporaryRedirect, "/login")
+}
+
+func (ctrl *UserController) Register(c echo.Context) (err error) {
+	userRegister := new(UserRegister)
+	err = c.Bind(userRegister)
+	if err != nil {
+		log.Fatal(err.Error())
+		return
+	}
+
+	err = ctrl.service.Register(userRegister, c)
+	if err != nil {
+		log.Println(err.Error())
+		return c.Redirect(http.StatusTemporaryRedirect, "/register")
+	}
+
+	return c.Redirect(http.StatusTemporaryRedirect, "/home")
 }
