@@ -32,7 +32,8 @@ func newCookieStore() *sessions.CookieStore {
 }
 
 func newPostgresStore() *pgstore.PGStore {
-	url := "postgres://postgres:kelvin@127.0.0.1:5432/hactive8?sslmode=disable"
+	url := "postgres://postgresuser:postgrespassword@postgres:5432/postgres?sslmode=disable"
+	// url := "postgres://postgres:kelvin@127.0.0.1:5432/hactive8?sslmode=disable"
 	authKey := []byte("my-auth-key-very-secret")
 	encryptionKey := []byte("my-encryption-key-very-secret123")
 

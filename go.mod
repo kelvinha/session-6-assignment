@@ -12,6 +12,7 @@ require (
 )
 
 require (
+	github.com/golang-migrate/migrate v3.5.4+incompatible // indirect
 	github.com/gorilla/securecookie v1.1.1 // indirect
 	github.com/jackc/chunkreader/v2 v2.0.1 // indirect
 	github.com/jackc/pgconn v1.13.0 // indirect

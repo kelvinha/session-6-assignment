@@ -10,30 +10,35 @@ import (
 
 func ConnectPGLocal() *gorm.DB {
 	var (
-		dbUser  = "postgres"
-		dbPass  = "kelvin"
-		dbHost  = "127.0.0.1"
-		dbName  = "hactive8"
-		dbPort  = "5432"
-		sslMode = "disable"
+		dbUser = "postgresuser"
+		dbPass = "postgrespassword"
+		dbHost = "postgres"
+		dbName = "postgres"
+		dbPort = "5432"
+		// sslMode = "disable"
 	)
 
 	// dsn
-	dsn := fmt.Sprintf(`
-		host=%s user=%s password=%s dbname=%s port=%s sslmode=%s`,
-		dbHost,
+	dsn := fmt.Sprintf(`postgres://%v:%v@%v:%v/%v?sslmode=disable`,
 		dbUser,
 		dbPass,
-		dbName,
+		dbHost,
 		dbPort,
-		sslMode,
+		dbName,
 	)
+	// dsn := fmt.Sprintf(`
+	// 	host=%s user=%s password=%s dbname=%s port=%s sslmode=%s`,
+	// 	dbHost,
+	// 	dbUser,
+	// 	dbPass,
+	// 	dbName,
+	// 	dbPort,
+	// 	sslMode,
+	// )
 
 	log.Print("dsn:", dsn)
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{
-		PrepareStmt: true,
-		// set without default transaction
-		// will call manually per-case query
+		PrepareStmt:            true,
 		SkipDefaultTransaction: true,
 	})
 	if err != nil {
